@@ -9,6 +9,11 @@
     >
     <title>Document</title>
 </head>
+<style>
+    .link-title:hover {
+        color: skyblue !important
+    }
+</style>
 <body>
     <main class="container">
         <h1>
@@ -17,10 +22,25 @@
             </a>
         </h1>
         <div>
-            <a href="/file?keyword={{ keyword }}">
+            <a href="/file?keyword={{ keyword }}&page={{ page }}{% for site in sites %}&sites={{ site }}{% endfor %}">
                 <button>
                     CSV 다운로드
                 </button>
+            </a>
+        </div>
+        <div style="margin-top: 20px; text-align: center;">
+            {% if page > 1 %}
+                <a href="/search?keyword={{ keyword }}&page={{ page - 1 }}{% for site in sites %}&sites={{ site }}{% endfor %}" style="text-decoration: none;">
+                    <button>이전</button>
+                </a>
+            {% endif %}
+
+            <span style="margin: 0 15px;">
+                {{ page }} 페이지
+            </span>
+
+            <a href="/search?keyword={{ keyword }}&page={{ page + 1 }}{% for site in sites %}&sites={{ site }}{% endfor %}" style="text-decoration: none;">
+                <button>다음</button>
             </a>
         </div>
         <table>
@@ -29,19 +49,19 @@
                 <td>회사</td>
                 <td>공고제목</td>
                 <td>위치</td>
-                <td>상세보기</td>
             </tr>
             {% for index, job in jobs %}
             <tr>
                 <td>{{ index + 1 }}</td>
-                <td>{{ job['company'] }}</td>
-                <td>{{ job['title'] }}</td>
-                <td>{{ job['location'] }}</td>
                 <td>
-                    <a href="{{ job['link'] }}" target="_blank">
-                        상세보기
+                    {{ job['company'] }}
+                </td>
+                <td>
+                    <a class="link-title" href="{{ job['link'] }}" target="_blank" style="text-decoration: none; color: inherit;">
+                        {{ job['title'] }}
                     </a>
                 </td>
+                <td>{{ job['location'] }}</td>
             </tr>
             {% endfor %}
         </table>
